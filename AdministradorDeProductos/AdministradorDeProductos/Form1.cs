@@ -135,6 +135,57 @@ namespace AdministradorDeProductos
             return total;
 
         }
+
+        private void btnBuscarCaducidad_Click(object sender, EventArgs e)
+        {
+           
+            if (tmrBuscarCaducidad == null)
+            {
+                MessageBox.Show("Error de fecha", "Debe ingresar una fecha", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                DateTime caducidadFind = tmrBuscarCaducidad.Value.Date;
+                Producto[] caducos = em.ProductosbyCaducidad(caducidadFind);
+                MessageBox.Show(caducos.ToString());
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnBuscarRango_Click(object sender, EventArgs e)
+        {
+            if (!decimal.TryParse(txtDe.Text, out decimal de) || !decimal.TryParse(btnHasta.Text, out decimal hasta))
+            {
+                throw new ArgumentException($"Error no ingreso un termino en decimal");
+            }
+            else if (de>hasta) {
+                MessageBox.Show("valores incoherentes");
+            }
+            else
+            {
+                
+                Producto[] rango = em.ProductosbyRango(de, hasta);
+                MessageBox.Show(rango.ToString());
+
+
+            }
+            txtDe.Clear();
+            btnHasta.Clear();
+        }
+
+        private void btnMostrarJson_Click(object sender, EventArgs e)
+        {
+            richJson.Text = em.ConvertToJson();
+        }
     }
 
 }
